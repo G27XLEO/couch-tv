@@ -8,6 +8,7 @@ import json
 import logging
 import mimetypes
 import os
+import re
 import time
 from collections.abc import MutableMapping
 from datetime import datetime, timezone
@@ -1016,6 +1017,100 @@ async def h_app_order_set(request):
     return ok(apps=apps, line=line, saved=saved, dock_max=DOCK_MAX)
 
 
+# ---------- Home settings made on the TV (the gear tile on the home) ----------
+# The TV home keeps its own settings (language, weather place and units, look, scenes, photos,
+# quick buttons, hidden apps) and hands the bridge a copy, so the phone remote and the TV agree and
+# a TV whose storage was cleared gets them back. One file per TV: data/settings.<tv>.json. They win
+# over config.json on that TV (docs/CONFIG.md). The bridge only checks their shape; it does not act
+# on them. Anything it does not know is dropped.
+SETTINGS_MAX = 32 * 1024
+SETTINGS_LANGS = ("en", "es", "es-MX")
+_PHOTO_FILE = re.compile(r"[A-Za-z0-9_-]{1,64}\.jpg")
+_PACKAGE = re.compile(r"[A-Za-z0-9_.:-]{1,200}")
+
+
+def _settings_path():
+    return os.path.join(store.DATA, f"settings.{_current.get()}.json")
+
+
+def home_settings():
+    data = store._read(_settings_path(), None)
+    if isinstance(data, dict) and isinstance(data.get("settings"), dict):
+        return {"settings": data["settings"], "updated": data.get("updated")}
+    return {"settings": {}, "updated": None}
+
+
+def _num(v, lo, hi):
+    return isinstance(v, (int, float)) and not isinstance(v, bool) and lo <= v <= hi
+
+
+def _ids(v, limit=40):
+    if not isinstance(v, list):
+        return None
+    return [x for x in dict.fromkeys(v) if isinstance(x, str) and 0 < len(x) <= 40][:limit]
+
+
+def clean_settings(s):
+    """The keys the TV home knows, each in the shape it writes them."""
+    out = {}
+    if s.get("lang") in SETTINGS_LANGS:
+        out["lang"] = s["lang"]
+    p = s.get("place")
+    if isinstance(p, dict) and _num(p.get("lat"), -90, 90) and _num(p.get("lon"), -180, 180):
+        # two decimals is the town, never the house
+        out["place"] = {"name": str(p.get("name") or "")[:80], "lat": round(p["lat"], 2), "lon": round(p["lon"], 2),
+                        "timezone": str(p.get("timezone") or "auto")[:64]}
+    if isinstance(s.get("wx_show"), bool):
+        out["wx_show"] = s["wx_show"]
+    if s.get("wx_unit") in ("c", "f"):
+        out["wx_unit"] = s["wx_unit"]
+    if s.get("wx_every") in (15, 30, 60):
+        out["wx_every"] = s["wx_every"]
+    if s.get("look") in ("night", "classic"):
+        out["look"] = s["look"]
+    for k in ("scene_order", "scenes_off"):
+        ids = _ids(s.get(k))
+        if ids is not None:
+            out[k] = ids
+    if _num(s.get("scene_seconds"), 5, 3600):
+        out["scene_seconds"] = int(s["scene_seconds"])
+    if s.get("clock") in ("12h", "24h"):
+        out["clock"] = s["clock"]
+    if isinstance(s.get("photos"), list):
+        photos = []
+        for ph in s["photos"][:20]:
+            if not isinstance(ph, dict) or not isinstance(ph.get("id"), str) or not 0 < len(ph["id"]) <= 32:
+                continue
+            if isinstance(ph.get("file"), str) and _PHOTO_FILE.fullmatch(ph["file"]):
+                photos.append({"id": ph["id"], "file": ph["file"]})
+            elif isinstance(ph.get("url"), str) and re.match(r"https?://", ph["url"]) and len(ph["url"]) <= 2000:
+                photos.append({"id": ph["id"], "url": ph["url"]})
+        out["photos"] = photos
+    if isinstance(s.get("hidden_apps"), list):
+        out["hidden_apps"] = [x for x in dict.fromkeys(s["hidden_apps"]) if isinstance(x, str) and _PACKAGE.fullmatch(x)][:200]
+    if isinstance(s.get("quick"), list):
+        out["quick"] = [x for x in dict.fromkeys(s["quick"]) if x in config.QUICK_IDS]
+    return out
+
+
+async def h_settings_get(request):
+    return ok(**home_settings())
+
+
+async def h_settings_set(request):
+    data = await body(request)
+    s = data.get("settings")
+    if not isinstance(s, dict):
+        raise ApiError(400, "settings (an object) is required")
+    if len(json.dumps(s)) > SETTINGS_MAX:
+        raise ApiError(413, "settings are too big")
+    cleaned = clean_settings(s)
+    updated = now_iso()
+    store._write(_settings_path(), {"settings": cleaned, "updated": updated})
+    record_action(request, "settings", {"keys": sorted(cleaned)}, True)
+    return ok(settings=cleaned, updated=updated)
+
+
 async def h_sleep_get(request):
     return ok(ends=sleep["ends"])
 
@@ -1694,6 +1789,8 @@ def make_app():
     r.add_post("/api/home-apps", h_home_apps)
     r.add_get("/api/app-order", h_app_order_get)
     r.add_post("/api/app-order", h_app_order_set)
+    r.add_get("/api/settings", h_settings_get)
+    r.add_post("/api/settings", h_settings_set)
     r.add_get("/api/continue", h_continue)
     r.add_post("/api/continue/open", h_continue_open)
     r.add_get("/api/sleep", h_sleep_get)

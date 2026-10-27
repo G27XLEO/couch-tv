@@ -195,6 +195,8 @@ def _home(h):
         "scene_seconds": _int(h.get("scene_seconds"), 20, 5, 3600),
         "clock": "24h" if str(h.get("clock")).lower() == "24h" else "12h",
         "dock_size": _int(h.get("dock_size"), DOCK_LIMIT, 1, DOCK_LIMIT),
+        # the TV home's language until someone picks one in Home settings: en, es or es-MX
+        "language": h.get("language") if h.get("language") in ("en", "es", "es-MX") else "en",
     }
 
 

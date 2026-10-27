@@ -23,6 +23,53 @@ the clock behind your own photo, make a transparent cut-out of everything in fro
 Shown with sample shows and sample people. On your TV, "keep watching" fills from what you
 actually watch.
 
+## Settings on the TV
+
+No computer and no `config.json` needed for the everyday settings. Press down to the dock and
+pick the gear, **Settings** (just before More apps). OK opens a small menu: **Home settings** is
+couch-tv's own list, **TV settings** is Android's own (Wi-Fi, picture, sound).
+
+![Home settings on the TV](docs/screens/home-settings.jpg)
+
+Any remote works: up and down move, right or OK opens a section, OK changes a row, holding OK on a
+scene, an app, a person or a quick button picks it up so up and down move it, and Back steps back
+and then closes. What you change shows when the list closes.
+
+- **Language:** English, Español, Español (México).
+- **Location:** type a town or city with the TV's on-screen keyboard (or the phone remote's Type),
+  pick it from the places found. It sets the weather's place and time zone. The place search is
+  Open-Meteo's, free and with no key.
+- **Weather:** show or hide it, °C or °F, check every 15, 30 or 60 minutes. Open-Meteo is the only
+  weather provider for now.
+- **Look and scenes:** Night scenes or Classic; which scenes take turns, in what order, how many
+  seconds each; a 12 or 24 hour clock; your own photos (below).
+- **Apps:** every app on the TV. OK moves it between home, More apps and hidden; hold OK to change
+  the order. The same order as holding OK on the dock and the phone's Arrange apps.
+- **People:** add, rename, remove and reorder who is watching.
+- **Quick buttons:** which of the sleep timer, picture mode, look and input buttons show, in what
+  order.
+- **About:** the version, the GitHub address (github.com/Seagey/couch-tv), where the settings are
+  kept, and Reset.
+
+**Your own photos.** On a TV with a file picker, **Add photos from a USB drive or this TV** opens it
+and copies the photos you choose into the app (turned the right way up and sized for the screen).
+Many Android TV and Google TV builds have no file picker; then the list says so and you add a photo
+from a web address instead (a JPEG or PNG on the internet, which the TV loads each time). The on-TV
+app (option C) only takes web addresses. Your photos take turns with the scenes and replace the
+Classic look's own. Videos are not supported: a looping video under the glass clock and the
+blurred dock is heavy work for a small TV stick, and the clock's frosted fill is cut from a still
+photo.
+
+**Where they are kept.** On the TV, and with option B on the computer too, so the phone agrees and a
+reset TV gets them back. They win over `config.json` on that TV; About, Reset home settings goes
+back to it. [docs/CONFIG.md](docs/CONFIG.md) has the details.
+
+**Languages.** The TV home and the phone remote both speak English, Spanish (`es`, for Spain and
+everyone else) and Mexican Spanish (`es-MX`: computadora, celular, presionar, clima and the rest).
+The phone has its own choice (TV menu, Language), "Same as the TV" by default. Messages that come
+from the bridge itself (an error, a note about how a show opened) and some screen reader labels on
+the phone are still in English.
+
 ## Three ways to run it
 
 - **A. TV home only.** The new home screen, nothing else. You use your normal TV remote and no
@@ -417,6 +464,7 @@ TV home (tv-home/)      --->  bridge (for shows and picks)               (Androi
 - A Google TV update can switch the Google home back on. Option B's bridge checks once a day and
   switches it off again; with option A, run `apply.sh` again.
 - Some apps will not open a show directly. They open the app instead. See `bridge/DEEPLINKS.md`.
+- The bridge's own messages (errors, notes) are in English in every language.
 - No support promise. It works on the TVs it was built on. Your TV may differ.
 
 ## Credits

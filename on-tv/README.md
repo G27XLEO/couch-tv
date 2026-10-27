@@ -116,6 +116,12 @@ adb shell pm enable com.google.android.apps.tv.launcherx                  # undo
 Check the package name on your TV first (`adb shell pm list packages | grep launcher`). Some Google
 Home features stop working while it is off. The app never does this by itself.
 
+The home's gear tile opens **Home settings** here too (language, weather place and units, look,
+scenes, apps, people, quick buttons; README, "Settings on the TV"). They are kept in this app
+(`/api/settings`, next to the setup page's own settings), and the people list is the same one the
+setup page edits. One difference: this app has no file picker, so your own photos come from a web
+address.
+
 ## Power on
 
 The TV cannot wake itself: in standby the app is not running. Use the TV's own remote, HDMI-CEC

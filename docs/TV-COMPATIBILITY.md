@@ -13,6 +13,7 @@ by the author. Everything else is what the sources say, not tested.
 |---|---|---|---|
 | Google TV (Chromecast with Google TV, Google TV Streamer, Sony, TCL, Hisense) | Yes | Yes | Partial |
 | Older Android TV (Android 9 to 11) | Yes | Yes | Yes |
+| Xiaomi TV Stick 4K (Android TV 11) | Yes (reported by a user, not tested by us) | Not reported | Not reported |
 | Nvidia Shield | Yes (not tested) | Yes | Yes (not tested) |
 | Onn (Google TV) | Yes | Yes | Partial |
 | Fire TV on Fire OS (Stick 4K Max, Cube) | Partial | Partial | Yes |
@@ -20,6 +21,15 @@ by the author. Everything else is what the sources say, not tested.
 | Samsung (Tizen) | No | No | No |
 | LG (webOS) | No (root only, fragile) | No | No |
 | Roku, Apple TV, Hisense VIDAA | No | No | No |
+
+## Reported by people using it
+
+Not tested by the author. Each line is what someone said worked on their own device.
+
+- **Xiaomi TV Stick 4K: works**, reported by a user. They installed `couch-tv-home.apk` from the
+  Releases page (option A) and asked for the settings screen and the Spanish that are now in Home
+  settings ([issue #1](https://github.com/Seagey/couch-tv/issues/1)). It runs Android TV 11, so
+  use the Android TV 9 to 11 menus (Settings, Device Preferences).
 
 ## Notes
 
