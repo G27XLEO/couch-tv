@@ -94,7 +94,9 @@ the weather.
 
 ### 2.1 Which option (the big one)
 
-Explain it like this, then ask which they want:
+**Always offer all three**, even when `check-tv.py` says C is only "likely" (that only means
+Developer options are not on yet). Most people do not have a computer that stays on, so C is often
+the right answer. Explain it like this, then ask which they want:
 
 > "There are three ways to run this.
 > **A. Just the new home screen.** A cleaner home with no ads. You use your normal TV remote.
@@ -110,8 +112,8 @@ Explain it like this, then ask which they want:
 > works if you add your own Anthropic API key, which costs a little per question. On newer Google
 > TVs you may have to type a pairing code from the TV's settings again after the TV restarts."
 
-Then: "Do you have a computer that is always on at home?" If yes, B is the best tested. If no, A or
-C. Write the choice down; the rest of the questions depend on it.
+Then: "Do you have a computer that is always on at home?" If yes, B is the best tested. If no,
+recommend C (A if they only want the home screen). Write the choice down; the rest of the questions depend on it.
 
 ### 2.2 People (profiles)
 

@@ -163,7 +163,7 @@ def main():
         verdict = {
             "A": "partly (workarounds only)" if fire else "yes",
             "B": "partly (no Android TV remote protocol)" if fire and not open_ports[6466] else "yes",
-            "C": "yes" if (fire or (sdk is not None and sdk <= 30)) else ("likely, may need a pairing code after each restart" if sdk else "likely (run with --adb to be sure)"),
+            "C": "yes" if (fire or (sdk is not None and sdk <= 30)) else ("likely, may need a pairing code after each restart" if sdk else "likely (switch on Developer options, then run with --adb to confirm)"),
             "why": "Android based." + ("" if facts else " Run with --adb for the Android version and maker."),
         }
         if not adb_open:

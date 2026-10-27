@@ -72,16 +72,24 @@ it can switch wireless debugging back on after a restart, the way Shizuku does).
 
 ## Install
 
-1. Build it (or take `app-release.apk` from a release):
+1. **Download `couch-tv-ontv.apk` from the GitHub Releases page** (easiest), or build it:
    ```
    JAVA_HOME=<jdk 17+> ANDROID_HOME=<android sdk> GRADLE=<gradle 8.9+> ./scripts/build.sh
    ```
    It builds the phone remote first if `remote/dist` is missing, then copies the remote and the TV
    home page into the app.
-2. Install from a computer once (developer options and debugging must be on):
+2. Install from a computer once (developer options and debugging must be on). With network
+   debugging on port 5555, the repo's own helper needs nothing else installed, and copies the app
+   in small pieces (some TVs stall on a normal push):
    ```
-   adb connect <tv-ip>:5555        # or: adb pair / adb connect for wireless debugging
-   adb install -r android/app/build/outputs/apk/release/app-release.apk
+   .venv/bin/python on-tv/scripts/real-tv.py --ip <tv-ip> install couch-tv-ontv.apk   # from the repo root, after README step 2
+   ```
+   If the TV only has **Wireless debugging** (many Android 13 and newer Google TVs), use Google's
+   platform-tools once instead:
+   ```
+   adb pair <tv-ip>:<pairing port> <6 digit code>    # from "Pair device with pairing code"
+   adb connect <tv-ip>:<port shown under Wireless debugging>
+   adb install -r couch-tv-ontv.apk
    ```
    Or copy the APK to the TV with a file app and open it there.
 3. On the TV, open **Couch TV**. It shows the address and a phone code.
