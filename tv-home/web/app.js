@@ -285,16 +285,23 @@
   // a big glass clock and (most) a cut-out of the photo that stands in front of the clock. The clock's
   // fill is the frosted copy of the photo exactly behind each digit, so it is re-aligned whenever the
   // time changes or a scene is about to show. Only the scene showing and the next one are drawn.
-  // Files: backgrounds/<photo>.jpg (and optionally -fg.webp).
+  // Files: backgrounds/<photo>.jpg, and optionally <photo>-glass.jpg and <photo>-fg.webp.
   var SCENES = [
     // Photos are the generated scene-*.jpg set in backgrounds/. Drop your own 1920x1080 JPEGs in there
-    // and name them here. A cut-out for the clock to sit behind is optional: set fg: true and add
-    // backgrounds/<photo>-fg.webp (a transparent copy of the foreground).
-    { id: "night", photo: "scene-night", fg: false },
-    { id: "golden", photo: "scene-golden", fg: false },
-    { id: "water", photo: "scene-water", fg: false },
-    { id: "fog", photo: "scene-fog", fg: false },
-    { id: "dawn", photo: "scene-dawn", fg: false }
+    // and name them here. Each one can have:
+    //   fg: true     backgrounds/<photo>-fg.webp, a transparent copy of everything in front of the sky
+    //                (peaks, trees, hills), drawn over the clock so the scenery overlaps its digits
+    //   glass: true  backgrounds/<photo>-glass.jpg, a blurred and brightened copy of the photo used
+    //                as the clock's frosted fill (without it the fill is the photo itself)
+    //   water: 0.55  the waterline, as a share of the screen height: above it the clock is sharp,
+    //                below it a blurred copy shows like a reflection
+    // backgrounds/CREDITS.md says how to make the cut-out and the glass copy for your own photo.
+    // Each scene's clock and date positions are in app.css (.s-<id>, .scene-<id> .date).
+    { id: "night", photo: "scene-night", fg: true, glass: true },
+    { id: "golden", photo: "scene-golden", fg: true, glass: true },
+    { id: "water", photo: "scene-water", fg: false, glass: true, water: 0.55 },   // the underside of the surface
+    { id: "fog", photo: "scene-fog", fg: true, glass: true },
+    { id: "dawn", photo: "scene-dawn", fg: true, glass: true }
   ];
   var SCENE_MS = 20000;
   var scene = 0, sceneEls = [], glassShown = "";
@@ -329,7 +336,7 @@
       var c = cs[k];
       c.innerHTML = '<span class="fill">' + hm + '</span><span class="sheen">' + hm + '</span><span class="rim">' + hm + "</span>";
       var f = c.firstChild;
-      f.style.backgroundImage = "url(backgrounds/" + s.photo + ".jpg)";
+      f.style.backgroundImage = "url(backgrounds/" + s.photo + (s.glass ? "-glass" : "") + ".jpg)";
       f.style.backgroundPosition = -(c.offsetLeft + f.offsetLeft) + "px " + -(c.offsetTop + f.offsetTop) + "px";
     }
     if (s.water) {   // above the waterline sharp, below it the blurred reflection

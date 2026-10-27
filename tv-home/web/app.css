@@ -253,22 +253,23 @@ body {
 .s-night .sbg, .s-night .fg { filter: brightness(0.86); }
 .s-night .gclock .fill { filter: brightness(1.15) saturate(1.2); opacity: 0.9; }
 .s-night .gclock .rim { color: rgba(255, 200, 215, 0.06); -webkit-text-stroke-color: rgba(255, 215, 225, 0.5); }
-/* 1 Golden hour: higher and a little smaller, behind the volcano */
-.s-golden .gclock { top: 6.5rem; font-size: 24.375rem; }
-/* 2 Waterline: the clock sits on the water; the half under it is blurred like a reflection */
+/* 1 Golden hour: a little smaller, low enough for the volcano's tip to rise into the digits */
+.s-golden .gclock { top: 9.5rem; font-size: 24.375rem; }
+/* 2 Waterline: the clock sits on the water (app.js water: the underside of the surface); the part
+   under it is blurred like a reflection */
 .s-water .shade { background: linear-gradient(180deg, rgba(0, 12, 24, 0.42) 0%, rgba(0, 12, 24, 0.12) 40%, rgba(0, 0, 0, 0) 52%, rgba(0, 20, 40, 0.5) 100%); }
-.s-water .gclock { top: 14.875rem; font-size: 26.25rem; filter: drop-shadow(0 0.5rem 1.875rem rgba(0, 20, 40, 0.35)); }
+.s-water .gclock { top: 16.75rem; font-size: 26.25rem; filter: drop-shadow(0 0.5rem 1.875rem rgba(0, 20, 40, 0.35)); }
 .s-water .gclock.under { filter: blur(0.1375rem); opacity: 0.78; transform: translateX(0.3125rem); }
 .s-water .gclock.under .fill { filter: hue-rotate(-8deg) saturate(1.4); }
 .s-water .gclock.under .rim { -webkit-text-stroke-color: rgba(170, 240, 255, 0.5); }
-/* 3 Fog: a big dark clock on the left, inside the mist */
-.s-fog .gclock { left: 6rem; right: auto; top: 12.25rem; font-size: 29.375rem; text-align: left; filter: none; }
+/* 3 Fog: a big dark clock on the left, sinking into the misty hills */
+.s-fog .gclock { left: 6rem; right: auto; top: 10.75rem; font-size: 29.375rem; text-align: left; filter: none; }
 .s-fog .gclock .fill { filter: brightness(0.46) saturate(0.8) contrast(1.1); opacity: 0.8; }
 .s-fog .gclock .rim { color: transparent; -webkit-text-stroke-color: rgba(255, 255, 255, 0.6); }
 .s-fog .gclock .sheen { display: none; }
-/* 5 Rainforest dawn: warm light at the top */
+/* 5 Rainforest dawn: warm light at the top, the clock low enough for the ridges to cross it */
 .s-dawn .shade { background: linear-gradient(180deg, rgba(50, 28, 12, 0.42) 0%, rgba(50, 28, 12, 0) 55%); }
-.s-dawn .gclock { filter: drop-shadow(0 0.5rem 2.125rem rgba(60, 30, 10, 0.3)); }
+.s-dawn .gclock { top: 14.375rem; filter: drop-shadow(0 0.5rem 2.125rem rgba(60, 30, 10, 0.3)); }
 
 /* glass, as on the lock screen */
 .theme-night .people, .theme-night .qbtn, .theme-night .grid, .theme-night .ncard {
@@ -286,9 +287,10 @@ body {
 .theme-night .date.swap { opacity: 0; }
 .scene-night .date { color: rgba(255, 232, 238, 0.92); }
 .scene-night .date .wx { color: rgba(255, 232, 238, 0.78); }
-.scene-golden .date { top: 3.625rem; }
-.scene-water .date { top: 11.625rem; }
-.scene-fog .date { left: 6.5rem; right: auto; top: 8.75rem; text-align: left; color: #16201d; text-shadow: none; }
+.scene-golden .date { top: 6.625rem; }
+.scene-water .date { top: 13.5rem; }
+.scene-dawn .date { top: 11rem; }
+.scene-fog .date { left: 6.5rem; right: auto; top: 7.25rem; text-align: left; color: #16201d; text-shadow: none; }
 .scene-fog .date .wx { color: rgba(22, 32, 29, 0.72); }
 .theme-night .date svg { width: 1.875rem; height: 1.875rem; vertical-align: -0.3rem; margin: 0 0.4rem 0 1rem;
   fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
