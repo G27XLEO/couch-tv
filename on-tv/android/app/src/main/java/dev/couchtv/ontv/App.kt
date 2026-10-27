@@ -122,14 +122,15 @@ class BridgeService : Service() {
         nm.createNotificationChannel(NotificationChannel("bridge", "Couch TV remote", NotificationManager.IMPORTANCE_LOW))
         val n = Notification.Builder(this, "bridge").setContentTitle("Couch TV").setContentText("Phone remote is on")
             .setSmallIcon(R.drawable.icon).setOngoing(true).build()
-        startForeground(1, n, ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE)
-        val wm = applicationContext.getSystemService(WifiManager::class.java)
-        wifiLock = runCatching { wm.createWifiLock(WifiManager.WIFI_MODE_FULL_HIGH_PERF, "couchtv").apply { acquire() } }.getOrNull()
-        multicast = runCatching { wm.createMulticastLock("couchtv-mdns").apply { setReferenceCounted(false); acquire() } }.getOrNull()
-        startServer()
-        Now.start()
-        Thread { runCatching { if (Adb.everAllowed || Adb.paired) Adb.ensure() } }.start()
-    }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+    startForeground(
+        1,
+        n,
+        ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+    )
+} else {
+    startForeground(1, n)
+}
 
     private fun startServer() {
         if (server != null) return
