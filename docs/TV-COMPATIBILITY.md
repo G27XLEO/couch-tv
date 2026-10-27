@@ -35,8 +35,9 @@ by the author. Everything else is what the sources say, not tested.
 - **Where the settings are.** Google TV: Settings, System, About (and Developer options under
   System). Android TV 9 to 11: Settings, Device Preferences, About (and Developer options under
   Device Preferences).
-- **ADB port.** Most Android TVs and Google TV boxes offer Network debugging on the fixed port 5555,
-  which every couch-tv script uses. Some Android 11 and newer Google TVs only offer Wireless
+- **ADB port.** Most Android TVs and Google TV boxes open the fixed port 5555, which every couch-tv
+  script uses: with a Network debugging switch, or on some TVs (a TCL with Android TV 11) with USB
+  debugging alone. Some Android 11 and newer Google TVs only offer Wireless
   debugging (pairing code, random port). For options A and B, open port 5555 once with Google's
   platform-tools (`adb pair`, `adb connect`, `adb tcpip 5555`, README step 1); on some TVs it
   closes again after a restart. `scripts/check-tv.py` says which kind your TV has.

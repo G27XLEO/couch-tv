@@ -47,8 +47,9 @@ pairing (1).** Use port 5555 (2) on older TVs.
 1. **Wireless debugging pairing** (Android 11 and newer, TV on Wi-Fi). The port is random and
    changes after every restart, so the app pairs with the TV once, then finds the port by itself
    and switches wireless debugging back on after a restart. With the TV remote:
-   1. Settings, System, About, press **Build** seven times (unlocks Developer options).
-   2. Settings, System, **Developer options**, scroll to **Wireless debugging**, OK, switch it on.
+   1. Settings, System, About (on Android TV 9 to 11: Settings, Device Preferences, About), press
+      **Build** seven times (unlocks Developer options).
+   2. Settings, System (or Device Preferences), **Developer options**, scroll to **Wireless debugging**, OK, switch it on.
       On "Allow wireless debugging on this network?" tick **Always allow on this network**, then
       **Allow**.
       **Careful:** in the Developer options list, **Revoke USB debugging authorizations** sits
@@ -72,12 +73,11 @@ it can switch wireless debugging back on after a restart, the way Shizuku does).
 
 ## Install
 
-1. **Download `couch-tv-ontv.apk` from the GitHub Releases page** (easiest), or build it:
-   ```
-   JAVA_HOME=<jdk 17+> ANDROID_HOME=<android sdk> GRADLE=<gradle 8.9+> ./scripts/build.sh
-   ```
-   It builds the phone remote first if `remote/dist` is missing, then copies the remote and the TV
-   home page into the app.
+1. **Download `couch-tv-ontv.apk` from the GitHub Releases page** (easiest), or build it from the
+   repo root with `sh scripts/build-apk.sh` (JDK 21, the Android SDK and Node 20+, no Gradle
+   needed; README, "Building the app"). It builds the phone remote first if `remote/dist` is
+   missing, then copies the remote and the TV home page into the app, and leaves it at
+   `dist/couch-tv-ontv.apk`.
 2. Install from a computer once (developer options and debugging must be on). With network
    debugging on port 5555, the repo's own helper needs nothing else installed, and copies the app
    in small pieces (some TVs stall on a normal push):
